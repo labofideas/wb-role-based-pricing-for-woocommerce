@@ -211,8 +211,14 @@ final class Eligibility_Resolver {
 		$group_ids = array();
 		foreach ( Pricing_Groups::get_active_groups() as $group ) {
 			$map = isset( $group['subscriptions'] ) && is_array( $group['subscriptions'] ) ? $group['subscriptions'] : array();
+			$has_product_ids_key = array_key_exists( 'product_ids', $map );
+			$has_statuses_key    = array_key_exists( 'statuses', $map );
+			if ( ! $has_product_ids_key && ! $has_statuses_key ) {
+				continue;
+			}
+
 			$product_ids = isset( $map['product_ids'] ) && is_array( $map['product_ids'] ) ? array_values( array_filter( array_map( 'absint', $map['product_ids'] ) ) ) : array();
-			$statuses = isset( $map['statuses'] ) && is_array( $map['statuses'] ) ? array_values( array_filter( array_map( 'sanitize_key', $map['statuses'] ) ) ) : array( 'active' );
+			$statuses = isset( $map['statuses'] ) && is_array( $map['statuses'] ) ? array_values( array_filter( array_map( 'sanitize_key', $map['statuses'] ) ) ) : array();
 			if ( empty( $statuses ) ) {
 				$statuses = array( 'active' );
 			}
