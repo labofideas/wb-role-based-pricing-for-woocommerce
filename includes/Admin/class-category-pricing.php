@@ -28,20 +28,20 @@ final class Category_Pricing {
 		$groups = Pricing_Groups::get_active_groups();
 
 		wp_nonce_field( 'wbrbpw_save_category_rules', 'wbrbpw_category_rules_nonce' );
-		echo '<h3>' . esc_html__( 'Pricing Group Category Rules', 'wb-role-based-pricing' ) . '</h3>';
+		echo '<h3>' . esc_html__( 'Pricing Group Category Rules', 'wb-role-based-pricing-for-woocommerce' ) . '</h3>';
 
 		if ( empty( $groups ) ) {
-			echo '<p>' . esc_html__( 'Create and enable at least one Pricing Group first.', 'wb-role-based-pricing' ) . '</p>';
+			echo '<p>' . esc_html__( 'Create and enable at least one Pricing Group first.', 'wb-role-based-pricing-for-woocommerce' ) . '</p>';
 			return;
 		}
 
 		echo '<table class="widefat striped"><thead><tr>';
-		echo '<th>' . esc_html__( 'Group', 'wb-role-based-pricing' ) . '</th>';
-		echo '<th>' . esc_html__( 'Enable', 'wb-role-based-pricing' ) . '</th>';
-		echo '<th>' . esc_html__( 'Type', 'wb-role-based-pricing' ) . '</th>';
-		echo '<th>' . esc_html__( 'Behavior', 'wb-role-based-pricing' ) . '</th>';
-		echo '<th>' . esc_html__( 'Percent', 'wb-role-based-pricing' ) . '</th>';
-		echo '<th>' . esc_html__( 'Amount', 'wb-role-based-pricing' ) . '</th>';
+		echo '<th>' . esc_html__( 'Group', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
+		echo '<th>' . esc_html__( 'Enable', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
+		echo '<th>' . esc_html__( 'Type', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
+		echo '<th>' . esc_html__( 'Behavior', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
+		echo '<th>' . esc_html__( 'Percent', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
+		echo '<th>' . esc_html__( 'Amount', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
 		echo '</tr></thead><tbody>';
 
 		foreach ( $groups as $group ) {
@@ -54,13 +54,13 @@ final class Category_Pricing {
 			echo '<td>' . esc_html( (string) $group['name'] ) . '</td>';
 			echo '<td><input type="checkbox" name="wbrbpw_category_rules[' . esc_attr( (string) $group_id ) . '][enabled]" value="1" ' . checked( '1', isset( $rule['enabled'] ) ? (string) $rule['enabled'] : '0', false ) . '></td>';
 			echo '<td><select name="wbrbpw_category_rules[' . esc_attr( (string) $group_id ) . '][type]">';
-			echo '<option value="none" ' . selected( $type, 'none', false ) . '>' . esc_html__( 'None', 'wb-role-based-pricing' ) . '</option>';
-			echo '<option value="percent" ' . selected( $type, 'percent', false ) . '>' . esc_html__( 'Percent', 'wb-role-based-pricing' ) . '</option>';
-			echo '<option value="amount" ' . selected( $type, 'amount', false ) . '>' . esc_html__( 'Amount', 'wb-role-based-pricing' ) . '</option>';
+			echo '<option value="none" ' . selected( $type, 'none', false ) . '>' . esc_html__( 'None', 'wb-role-based-pricing-for-woocommerce' ) . '</option>';
+			echo '<option value="percent" ' . selected( $type, 'percent', false ) . '>' . esc_html__( 'Percent', 'wb-role-based-pricing-for-woocommerce' ) . '</option>';
+			echo '<option value="amount" ' . selected( $type, 'amount', false ) . '>' . esc_html__( 'Amount', 'wb-role-based-pricing-for-woocommerce' ) . '</option>';
 			echo '</select></td>';
 			echo '<td><select name="wbrbpw_category_rules[' . esc_attr( (string) $group_id ) . '][behavior]">';
-			echo '<option value="if_no_product_rule" ' . selected( $behavior, 'if_no_product_rule', false ) . '>' . esc_html__( 'Only if no product rule', 'wb-role-based-pricing' ) . '</option>';
-			echo '<option value="override_product_rules" ' . selected( $behavior, 'override_product_rules', false ) . '>' . esc_html__( 'Override product rules', 'wb-role-based-pricing' ) . '</option>';
+			echo '<option value="if_no_product_rule" ' . selected( $behavior, 'if_no_product_rule', false ) . '>' . esc_html__( 'Only if no product rule', 'wb-role-based-pricing-for-woocommerce' ) . '</option>';
+			echo '<option value="override_product_rules" ' . selected( $behavior, 'override_product_rules', false ) . '>' . esc_html__( 'Override product rules', 'wb-role-based-pricing-for-woocommerce' ) . '</option>';
 			echo '</select></td>';
 			echo '<td><input type="number" step="0.01" name="wbrbpw_category_rules[' . esc_attr( (string) $group_id ) . '][percent]" value="' . esc_attr( isset( $rule['percent'] ) ? (string) $rule['percent'] : '' ) . '"></td>';
 			echo '<td><input type="number" step="0.01" name="wbrbpw_category_rules[' . esc_attr( (string) $group_id ) . '][amount]" value="' . esc_attr( isset( $rule['amount'] ) ? (string) $rule['amount'] : '' ) . '"></td>';
@@ -79,6 +79,7 @@ final class Category_Pricing {
 			return;
 		}
 
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Rule values are sanitized per field below.
 		$raw_rules = isset( $_POST['wbrbpw_category_rules'] ) && is_array( $_POST['wbrbpw_category_rules'] ) ? wp_unslash( $_POST['wbrbpw_category_rules'] ) : array();
 		$rules = array();
 

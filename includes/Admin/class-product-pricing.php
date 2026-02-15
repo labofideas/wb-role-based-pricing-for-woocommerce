@@ -16,7 +16,7 @@ final class Product_Pricing {
 
 	public static function register_tab( array $tabs ): array {
 		$tabs['wb_pricing_groups'] = array(
-			'label'    => __( 'Pricing Groups', 'wb-role-based-pricing' ),
+			'label'    => __( 'Pricing Groups', 'wb-role-based-pricing-for-woocommerce' ),
 			'target'   => 'wb_pricing_groups_product_data',
 			'class'    => array( 'show_if_simple', 'show_if_variable' ),
 			'priority' => 80,
@@ -37,20 +37,20 @@ final class Product_Pricing {
 		wp_nonce_field( 'wbrbpw_save_product_rules', 'wbrbpw_product_rules_nonce' );
 
 		if ( empty( $groups ) ) {
-			echo '<p class="form-field">' . esc_html__( 'Create and enable at least one Pricing Group first.', 'wb-role-based-pricing' ) . '</p>';
+			echo '<p class="form-field">' . esc_html__( 'Create and enable at least one Pricing Group first.', 'wb-role-based-pricing-for-woocommerce' ) . '</p>';
 			echo '</div>';
 			return;
 		}
 
-		echo '<p>' . esc_html__( 'Set product-level pricing rules by group.', 'wb-role-based-pricing' ) . '</p>';
+		echo '<p>' . esc_html__( 'Set product-level pricing rules by group.', 'wb-role-based-pricing-for-woocommerce' ) . '</p>';
 		echo '<table class="widefat striped"><thead><tr>';
-		echo '<th>' . esc_html__( 'Group', 'wb-role-based-pricing' ) . '</th>';
-		echo '<th>' . esc_html__( 'Enable', 'wb-role-based-pricing' ) . '</th>';
-		echo '<th>' . esc_html__( 'Type', 'wb-role-based-pricing' ) . '</th>';
-		echo '<th>' . esc_html__( 'Fixed Regular', 'wb-role-based-pricing' ) . '</th>';
-		echo '<th>' . esc_html__( 'Fixed Sale', 'wb-role-based-pricing' ) . '</th>';
-		echo '<th>' . esc_html__( 'Percent', 'wb-role-based-pricing' ) . '</th>';
-		echo '<th>' . esc_html__( 'Amount', 'wb-role-based-pricing' ) . '</th>';
+		echo '<th>' . esc_html__( 'Group', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
+		echo '<th>' . esc_html__( 'Enable', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
+		echo '<th>' . esc_html__( 'Type', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
+		echo '<th>' . esc_html__( 'Fixed Regular', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
+		echo '<th>' . esc_html__( 'Fixed Sale', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
+		echo '<th>' . esc_html__( 'Percent', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
+		echo '<th>' . esc_html__( 'Amount', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
 		echo '</tr></thead><tbody>';
 
 			foreach ( $groups as $group ) {
@@ -63,10 +63,10 @@ final class Product_Pricing {
 			echo '<td>' . esc_html( (string) $group['name'] ) . '</td>';
 			echo '<td><input type="checkbox" name="wbrbpw_product_rules[' . esc_attr( (string) $group_id ) . '][enabled]" value="1" ' . checked( '1', $enabled, false ) . '></td>';
 			echo '<td><select name="wbrbpw_product_rules[' . esc_attr( (string) $group_id ) . '][type]">';
-			echo '<option value="none" ' . selected( $type, 'none', false ) . '>' . esc_html__( 'None', 'wb-role-based-pricing' ) . '</option>';
-			echo '<option value="fixed_price" ' . selected( $type, 'fixed_price', false ) . '>' . esc_html__( 'Fixed Price', 'wb-role-based-pricing' ) . '</option>';
-			echo '<option value="percent" ' . selected( $type, 'percent', false ) . '>' . esc_html__( 'Percent', 'wb-role-based-pricing' ) . '</option>';
-			echo '<option value="amount" ' . selected( $type, 'amount', false ) . '>' . esc_html__( 'Amount', 'wb-role-based-pricing' ) . '</option>';
+			echo '<option value="none" ' . selected( $type, 'none', false ) . '>' . esc_html__( 'None', 'wb-role-based-pricing-for-woocommerce' ) . '</option>';
+			echo '<option value="fixed_price" ' . selected( $type, 'fixed_price', false ) . '>' . esc_html__( 'Fixed Price', 'wb-role-based-pricing-for-woocommerce' ) . '</option>';
+			echo '<option value="percent" ' . selected( $type, 'percent', false ) . '>' . esc_html__( 'Percent', 'wb-role-based-pricing-for-woocommerce' ) . '</option>';
+			echo '<option value="amount" ' . selected( $type, 'amount', false ) . '>' . esc_html__( 'Amount', 'wb-role-based-pricing-for-woocommerce' ) . '</option>';
 			echo '</select></td>';
 			echo '<td><input type="number" step="0.01" name="wbrbpw_product_rules[' . esc_attr( (string) $group_id ) . '][fixed_regular]" value="' . esc_attr( isset( $rule['fixed_regular'] ) ? (string) $rule['fixed_regular'] : '' ) . '"></td>';
 			echo '<td><input type="number" step="0.01" name="wbrbpw_product_rules[' . esc_attr( (string) $group_id ) . '][fixed_sale]" value="' . esc_attr( isset( $rule['fixed_sale'] ) ? (string) $rule['fixed_sale'] : '' ) . '"></td>';
@@ -81,16 +81,16 @@ final class Product_Pricing {
 				$product = wc_get_product( $product_id );
 				if ( $product instanceof \WC_Product && $product->is_type( 'variable' ) ) {
 					echo '<hr/>';
-					echo '<h3>' . esc_html__( 'Variation Bulk Actions', 'wb-role-based-pricing' ) . '</h3>';
-					echo '<p class="description">' . esc_html__( 'Apply parent rules to all variations, clear variation rules, or apply a specific group rule to all variations.', 'wb-role-based-pricing' ) . '</p>';
+					echo '<h3>' . esc_html__( 'Variation Bulk Actions', 'wb-role-based-pricing-for-woocommerce' ) . '</h3>';
+					echo '<p class="description">' . esc_html__( 'Apply parent rules to all variations, clear variation rules, or apply a specific group rule to all variations.', 'wb-role-based-pricing-for-woocommerce' ) . '</p>';
 
-					echo '<p><label><input type="checkbox" name="wbrbpw_bulk_copy_parent_all" value="1" /> ' . esc_html__( 'Copy all parent group rules to all variations', 'wb-role-based-pricing' ) . '</label></p>';
-					echo '<p><label><input type="checkbox" name="wbrbpw_bulk_clear_all_variations" value="1" /> ' . esc_html__( 'Clear all variation group rules', 'wb-role-based-pricing' ) . '</label></p>';
+					echo '<p><label><input type="checkbox" name="wbrbpw_bulk_copy_parent_all" value="1" /> ' . esc_html__( 'Copy all parent group rules to all variations', 'wb-role-based-pricing-for-woocommerce' ) . '</label></p>';
+					echo '<p><label><input type="checkbox" name="wbrbpw_bulk_clear_all_variations" value="1" /> ' . esc_html__( 'Clear all variation group rules', 'wb-role-based-pricing-for-woocommerce' ) . '</label></p>';
 
 					echo '<table class="widefat striped"><thead><tr>';
-					echo '<th>' . esc_html__( 'Group', 'wb-role-based-pricing' ) . '</th>';
-					echo '<th>' . esc_html__( 'Apply parent rule to all variations', 'wb-role-based-pricing' ) . '</th>';
-					echo '<th>' . esc_html__( 'Clear this group from all variations', 'wb-role-based-pricing' ) . '</th>';
+					echo '<th>' . esc_html__( 'Group', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
+					echo '<th>' . esc_html__( 'Apply parent rule to all variations', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
+					echo '<th>' . esc_html__( 'Clear this group from all variations', 'wb-role-based-pricing-for-woocommerce' ) . '</th>';
 					echo '</tr></thead><tbody>';
 
 					foreach ( $groups as $group ) {
@@ -118,6 +118,7 @@ final class Product_Pricing {
 			return;
 		}
 
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Rule values are sanitized field-by-field in sanitize_rule().
 		$raw_rules = isset( $_POST['wbrbpw_product_rules'] ) && is_array( $_POST['wbrbpw_product_rules'] ) ? wp_unslash( $_POST['wbrbpw_product_rules'] ) : array();
 		$rules = array();
 
@@ -144,15 +145,21 @@ final class Product_Pricing {
 		/**
 		 * @param array<int,array<string,mixed>> $parent_rules
 		 */
-		private static function process_variation_bulk_actions( \WC_Product $product, array $parent_rules ): void {
-			$copy_parent_all = isset( $_POST['wbrbpw_bulk_copy_parent_all'] );
-			$clear_all       = isset( $_POST['wbrbpw_bulk_clear_all_variations'] );
-			$apply_groups    = isset( $_POST['wbrbpw_bulk_apply_to_variations'] ) && is_array( $_POST['wbrbpw_bulk_apply_to_variations'] )
-				? array_map( 'absint', array_keys( wp_unslash( $_POST['wbrbpw_bulk_apply_to_variations'] ) ) )
-				: array();
-			$clear_groups    = isset( $_POST['wbrbpw_bulk_clear_group_variations'] ) && is_array( $_POST['wbrbpw_bulk_clear_group_variations'] )
-				? array_map( 'absint', array_keys( wp_unslash( $_POST['wbrbpw_bulk_clear_group_variations'] ) ) )
-				: array();
+	private static function process_variation_bulk_actions( \WC_Product $product, array $parent_rules ): void {
+		if ( ! isset( $_POST['wbrbpw_product_rules_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wbrbpw_product_rules_nonce'] ) ), 'wbrbpw_save_product_rules' ) ) {
+			return;
+		}
+
+		$copy_parent_all = isset( $_POST['wbrbpw_bulk_copy_parent_all'] );
+		$clear_all       = isset( $_POST['wbrbpw_bulk_clear_all_variations'] );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Group IDs are sanitized with absint() after unslash.
+		$apply_groups    = isset( $_POST['wbrbpw_bulk_apply_to_variations'] ) && is_array( $_POST['wbrbpw_bulk_apply_to_variations'] )
+			? array_map( 'absint', array_keys( wp_unslash( $_POST['wbrbpw_bulk_apply_to_variations'] ) ) )
+			: array();
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Group IDs are sanitized with absint() after unslash.
+		$clear_groups    = isset( $_POST['wbrbpw_bulk_clear_group_variations'] ) && is_array( $_POST['wbrbpw_bulk_clear_group_variations'] )
+			? array_map( 'absint', array_keys( wp_unslash( $_POST['wbrbpw_bulk_clear_group_variations'] ) ) )
+			: array();
 
 			if ( ! $copy_parent_all && ! $clear_all && empty( $apply_groups ) && empty( $clear_groups ) ) {
 				return;
@@ -226,7 +233,7 @@ final class Product_Pricing {
 		}
 
 		echo '<div class="options_group">';
-		echo '<p><strong>' . esc_html__( 'Pricing Group Rules', 'wb-role-based-pricing' ) . '</strong></p>';
+		echo '<p><strong>' . esc_html__( 'Pricing Group Rules', 'wb-role-based-pricing-for-woocommerce' ) . '</strong></p>';
 		foreach ( $groups as $group ) {
 			$group_id = (int) $group['id'];
 			$rule     = isset( $rules[ $group_id ] ) && is_array( $rules[ $group_id ] ) ? $rules[ $group_id ] : array();
@@ -234,17 +241,17 @@ final class Product_Pricing {
 
 			echo '<p style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">';
 			echo '<strong>' . esc_html( (string) $group['name'] ) . '</strong>';
-			echo '<label><input type="checkbox" name="wbrbpw_variation_rules[' . esc_attr( (string) $variation_post->ID ) . '][' . esc_attr( (string) $group_id ) . '][enabled]" value="1" ' . checked( '1', isset( $rule['enabled'] ) ? (string) $rule['enabled'] : '0', false ) . '> ' . esc_html__( 'Enable', 'wb-role-based-pricing' ) . '</label>';
+			echo '<label><input type="checkbox" name="wbrbpw_variation_rules[' . esc_attr( (string) $variation_post->ID ) . '][' . esc_attr( (string) $group_id ) . '][enabled]" value="1" ' . checked( '1', isset( $rule['enabled'] ) ? (string) $rule['enabled'] : '0', false ) . '> ' . esc_html__( 'Enable', 'wb-role-based-pricing-for-woocommerce' ) . '</label>';
 			echo '<select name="wbrbpw_variation_rules[' . esc_attr( (string) $variation_post->ID ) . '][' . esc_attr( (string) $group_id ) . '][type]">';
-			echo '<option value="none" ' . selected( $type, 'none', false ) . '>' . esc_html__( 'None', 'wb-role-based-pricing' ) . '</option>';
-			echo '<option value="fixed_price" ' . selected( $type, 'fixed_price', false ) . '>' . esc_html__( 'Fixed Price', 'wb-role-based-pricing' ) . '</option>';
-			echo '<option value="percent" ' . selected( $type, 'percent', false ) . '>' . esc_html__( 'Percent', 'wb-role-based-pricing' ) . '</option>';
-			echo '<option value="amount" ' . selected( $type, 'amount', false ) . '>' . esc_html__( 'Amount', 'wb-role-based-pricing' ) . '</option>';
+			echo '<option value="none" ' . selected( $type, 'none', false ) . '>' . esc_html__( 'None', 'wb-role-based-pricing-for-woocommerce' ) . '</option>';
+			echo '<option value="fixed_price" ' . selected( $type, 'fixed_price', false ) . '>' . esc_html__( 'Fixed Price', 'wb-role-based-pricing-for-woocommerce' ) . '</option>';
+			echo '<option value="percent" ' . selected( $type, 'percent', false ) . '>' . esc_html__( 'Percent', 'wb-role-based-pricing-for-woocommerce' ) . '</option>';
+			echo '<option value="amount" ' . selected( $type, 'amount', false ) . '>' . esc_html__( 'Amount', 'wb-role-based-pricing-for-woocommerce' ) . '</option>';
 			echo '</select>';
-			echo '<input type="number" step="0.01" placeholder="' . esc_attr__( 'Fixed regular', 'wb-role-based-pricing' ) . '" name="wbrbpw_variation_rules[' . esc_attr( (string) $variation_post->ID ) . '][' . esc_attr( (string) $group_id ) . '][fixed_regular]" value="' . esc_attr( isset( $rule['fixed_regular'] ) ? (string) $rule['fixed_regular'] : '' ) . '">';
-			echo '<input type="number" step="0.01" placeholder="' . esc_attr__( 'Fixed sale', 'wb-role-based-pricing' ) . '" name="wbrbpw_variation_rules[' . esc_attr( (string) $variation_post->ID ) . '][' . esc_attr( (string) $group_id ) . '][fixed_sale]" value="' . esc_attr( isset( $rule['fixed_sale'] ) ? (string) $rule['fixed_sale'] : '' ) . '">';
-			echo '<input type="number" step="0.01" placeholder="' . esc_attr__( '%', 'wb-role-based-pricing' ) . '" name="wbrbpw_variation_rules[' . esc_attr( (string) $variation_post->ID ) . '][' . esc_attr( (string) $group_id ) . '][percent]" value="' . esc_attr( isset( $rule['percent'] ) ? (string) $rule['percent'] : '' ) . '">';
-			echo '<input type="number" step="0.01" placeholder="' . esc_attr__( 'Amount', 'wb-role-based-pricing' ) . '" name="wbrbpw_variation_rules[' . esc_attr( (string) $variation_post->ID ) . '][' . esc_attr( (string) $group_id ) . '][amount]" value="' . esc_attr( isset( $rule['amount'] ) ? (string) $rule['amount'] : '' ) . '">';
+			echo '<input type="number" step="0.01" placeholder="' . esc_attr__( 'Fixed regular', 'wb-role-based-pricing-for-woocommerce' ) . '" name="wbrbpw_variation_rules[' . esc_attr( (string) $variation_post->ID ) . '][' . esc_attr( (string) $group_id ) . '][fixed_regular]" value="' . esc_attr( isset( $rule['fixed_regular'] ) ? (string) $rule['fixed_regular'] : '' ) . '">';
+			echo '<input type="number" step="0.01" placeholder="' . esc_attr__( 'Fixed sale', 'wb-role-based-pricing-for-woocommerce' ) . '" name="wbrbpw_variation_rules[' . esc_attr( (string) $variation_post->ID ) . '][' . esc_attr( (string) $group_id ) . '][fixed_sale]" value="' . esc_attr( isset( $rule['fixed_sale'] ) ? (string) $rule['fixed_sale'] : '' ) . '">';
+			echo '<input type="number" step="0.01" placeholder="' . esc_attr__( '%', 'wb-role-based-pricing-for-woocommerce' ) . '" name="wbrbpw_variation_rules[' . esc_attr( (string) $variation_post->ID ) . '][' . esc_attr( (string) $group_id ) . '][percent]" value="' . esc_attr( isset( $rule['percent'] ) ? (string) $rule['percent'] : '' ) . '">';
+			echo '<input type="number" step="0.01" placeholder="' . esc_attr__( 'Amount', 'wb-role-based-pricing-for-woocommerce' ) . '" name="wbrbpw_variation_rules[' . esc_attr( (string) $variation_post->ID ) . '][' . esc_attr( (string) $group_id ) . '][amount]" value="' . esc_attr( isset( $rule['amount'] ) ? (string) $rule['amount'] : '' ) . '">';
 			echo '</p>';
 		}
 		echo '</div>';
@@ -260,6 +267,7 @@ final class Product_Pricing {
 			return;
 		}
 
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Rule values are sanitized field-by-field in sanitize_rule().
 		$all_rules = isset( $_POST['wbrbpw_variation_rules'] ) && is_array( $_POST['wbrbpw_variation_rules'] ) ? wp_unslash( $_POST['wbrbpw_variation_rules'] ) : array();
 		if ( empty( $all_rules[ $variation_id ] ) || ! is_array( $all_rules[ $variation_id ] ) ) {
 			return;

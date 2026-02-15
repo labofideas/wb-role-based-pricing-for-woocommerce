@@ -6,7 +6,9 @@
  * Version:     1.0.0
  * Author:      Wbcom Designs
  * Author URI:  https://wbcomdesigns.com/
- * Text Domain: wb-role-based-pricing
+ * Text Domain: wb-role-based-pricing-for-woocommerce
+ * License:     GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires at least: 6.5
  * Requires PHP: 8.0
  * WC requires at least: 8.0
@@ -56,7 +58,7 @@ register_activation_hook(
 	static function () {
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			deactivate_plugins( plugin_basename( __FILE__ ) );
-			wp_die( esc_html__( 'WB Role Based Pricing for WooCommerce requires WooCommerce to be active.', 'wb-role-based-pricing' ) );
+			wp_die( esc_html__( 'WB Role Based Pricing for WooCommerce requires WooCommerce to be active.', 'wb-role-based-pricing-for-woocommerce' ) );
 		}
 
 		update_option( 'wbrbpw_version', WBRBPW_VERSION );

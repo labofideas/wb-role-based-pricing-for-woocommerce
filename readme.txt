@@ -1,7 +1,7 @@
 === WB Role Based Pricing for WooCommerce ===
 Contributors: wbcomdesigns
 Requires at least: 6.5
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 8.0
 Stable tag: 1.0.0
 License: GPLv2 or later

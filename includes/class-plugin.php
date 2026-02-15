@@ -66,8 +66,8 @@ final class Plugin {
 		$groups_url   = admin_url( 'edit.php?post_type=wb_pricing_group' );
 
 		$custom_links = array(
-			'<a href="' . esc_url( $settings_url ) . '">' . esc_html__( 'Settings', 'wb-role-based-pricing' ) . '</a>',
-			'<a href="' . esc_url( $groups_url ) . '">' . esc_html__( 'Pricing Groups', 'wb-role-based-pricing' ) . '</a>',
+			'<a href="' . esc_url( $settings_url ) . '">' . esc_html__( 'Settings', 'wb-role-based-pricing-for-woocommerce' ) . '</a>',
+			'<a href="' . esc_url( $groups_url ) . '">' . esc_html__( 'Pricing Groups', 'wb-role-based-pricing-for-woocommerce' ) . '</a>',
 		);
 
 		return array_merge( $custom_links, $links );
@@ -79,7 +79,7 @@ final class Plugin {
 		}
 
 		echo '<div class="notice notice-error"><p>';
-		echo esc_html__( 'WB Role Based Pricing for WooCommerce requires WooCommerce to be active.', 'wb-role-based-pricing' );
+		echo esc_html__( 'WB Role Based Pricing for WooCommerce requires WooCommerce to be active.', 'wb-role-based-pricing-for-woocommerce' );
 		echo '</p></div>';
 	}
 }

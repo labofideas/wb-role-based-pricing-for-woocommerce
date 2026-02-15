@@ -30,10 +30,10 @@ final class Pricing_Groups {
 			'wb_pricing_group',
 			array(
 				'labels' => array(
-					'name'          => __( 'Pricing Groups', 'wb-role-based-pricing' ),
-					'singular_name' => __( 'Pricing Group', 'wb-role-based-pricing' ),
-					'add_new_item'  => __( 'Add New Pricing Group', 'wb-role-based-pricing' ),
-					'edit_item'     => __( 'Edit Pricing Group', 'wb-role-based-pricing' ),
+					'name'          => __( 'Pricing Groups', 'wb-role-based-pricing-for-woocommerce' ),
+					'singular_name' => __( 'Pricing Group', 'wb-role-based-pricing-for-woocommerce' ),
+					'add_new_item'  => __( 'Add New Pricing Group', 'wb-role-based-pricing-for-woocommerce' ),
+					'edit_item'     => __( 'Edit Pricing Group', 'wb-role-based-pricing-for-woocommerce' ),
 				),
 				'public'          => false,
 				'show_ui'         => true,
@@ -50,7 +50,7 @@ final class Pricing_Groups {
 	public static function register_meta_boxes(): void {
 		add_meta_box(
 			'wb-pricing-group-rules',
-			__( 'Pricing Group Rules', 'wb-role-based-pricing' ),
+			__( 'Pricing Group Rules', 'wb-role-based-pricing-for-woocommerce' ),
 			array( __CLASS__, 'render_rules_metabox' ),
 			'wb_pricing_group',
 			'normal',
@@ -80,41 +80,41 @@ final class Pricing_Groups {
 		$role_options = is_object( $wp_roles ) ? $wp_roles->roles : array();
 		?>
 		<p>
-			<label for="wbrbpw_group_priority"><strong><?php esc_html_e( 'Priority', 'wb-role-based-pricing' ); ?></strong></label><br/>
+			<label for="wbrbpw_group_priority"><strong><?php esc_html_e( 'Priority', 'wb-role-based-pricing-for-woocommerce' ); ?></strong></label><br/>
 			<input type="number" min="0" step="1" id="wbrbpw_group_priority" name="wbrbpw_group_priority" value="<?php echo esc_attr( $priority ); ?>" />
-			<span class="description"><?php esc_html_e( 'Lower number = higher priority.', 'wb-role-based-pricing' ); ?></span>
+			<span class="description"><?php esc_html_e( 'Lower number = higher priority.', 'wb-role-based-pricing-for-woocommerce' ); ?></span>
 		</p>
 		<p>
 			<label>
 				<input type="checkbox" name="wbrbpw_group_enabled" value="1" <?php checked( '1', (string) $enabled ); ?> />
-				<?php esc_html_e( 'Enable this pricing group', 'wb-role-based-pricing' ); ?>
+				<?php esc_html_e( 'Enable this pricing group', 'wb-role-based-pricing-for-woocommerce' ); ?>
 			</label>
 		</p>
 		<hr/>
-		<h4><?php esc_html_e( 'Default Rule', 'wb-role-based-pricing' ); ?></h4>
+		<h4><?php esc_html_e( 'Default Rule', 'wb-role-based-pricing-for-woocommerce' ); ?></h4>
 		<p>
 			<select name="wbrbpw_group_rule[type]">
-				<option value="none" <?php selected( $rule_type, 'none' ); ?>><?php esc_html_e( 'None', 'wb-role-based-pricing' ); ?></option>
-				<option value="fixed_price" <?php selected( $rule_type, 'fixed_price' ); ?>><?php esc_html_e( 'Fixed Price Override', 'wb-role-based-pricing' ); ?></option>
-				<option value="percent" <?php selected( $rule_type, 'percent' ); ?>><?php esc_html_e( 'Percentage Adjustment', 'wb-role-based-pricing' ); ?></option>
-				<option value="amount" <?php selected( $rule_type, 'amount' ); ?>><?php esc_html_e( 'Fixed Amount Adjustment', 'wb-role-based-pricing' ); ?></option>
+				<option value="none" <?php selected( $rule_type, 'none' ); ?>><?php esc_html_e( 'None', 'wb-role-based-pricing-for-woocommerce' ); ?></option>
+				<option value="fixed_price" <?php selected( $rule_type, 'fixed_price' ); ?>><?php esc_html_e( 'Fixed Price Override', 'wb-role-based-pricing-for-woocommerce' ); ?></option>
+				<option value="percent" <?php selected( $rule_type, 'percent' ); ?>><?php esc_html_e( 'Percentage Adjustment', 'wb-role-based-pricing-for-woocommerce' ); ?></option>
+				<option value="amount" <?php selected( $rule_type, 'amount' ); ?>><?php esc_html_e( 'Fixed Amount Adjustment', 'wb-role-based-pricing-for-woocommerce' ); ?></option>
 			</select>
 		</p>
 		<p>
-			<label><?php esc_html_e( 'Fixed price', 'wb-role-based-pricing' ); ?></label><br/>
+			<label><?php esc_html_e( 'Fixed price', 'wb-role-based-pricing-for-woocommerce' ); ?></label><br/>
 			<input type="number" step="0.01" name="wbrbpw_group_rule[fixed_price]" value="<?php echo esc_attr( $rule['fixed_price'] ?? '' ); ?>" />
 		</p>
 		<p>
-			<label><?php esc_html_e( 'Percent (+/-)', 'wb-role-based-pricing' ); ?></label><br/>
+			<label><?php esc_html_e( 'Percent (+/-)', 'wb-role-based-pricing-for-woocommerce' ); ?></label><br/>
 			<input type="number" step="0.01" name="wbrbpw_group_rule[percent]" value="<?php echo esc_attr( $rule['percent'] ?? '' ); ?>" />
 		</p>
 		<p>
-			<label><?php esc_html_e( 'Amount (+/-)', 'wb-role-based-pricing' ); ?></label><br/>
+			<label><?php esc_html_e( 'Amount (+/-)', 'wb-role-based-pricing-for-woocommerce' ); ?></label><br/>
 			<input type="number" step="0.01" name="wbrbpw_group_rule[amount]" value="<?php echo esc_attr( $rule['amount'] ?? '' ); ?>" />
 		</p>
 		<hr/>
-		<h4><?php esc_html_e( 'Role Mapping', 'wb-role-based-pricing' ); ?></h4>
-		<p class="description"><?php esc_html_e( 'Users with selected roles qualify for this group.', 'wb-role-based-pricing' ); ?></p>
+		<h4><?php esc_html_e( 'Role Mapping', 'wb-role-based-pricing-for-woocommerce' ); ?></h4>
+		<p class="description"><?php esc_html_e( 'Users with selected roles qualify for this group.', 'wb-role-based-pricing-for-woocommerce' ); ?></p>
 		<?php foreach ( $role_options as $role_key => $role_data ) : ?>
 			<label style="display:block;margin-bottom:4px;">
 				<input type="checkbox" name="wbrbpw_group_roles[]" value="<?php echo esc_attr( $role_key ); ?>" <?php checked( in_array( $role_key, $roles, true ) ); ?> />
@@ -122,9 +122,9 @@ final class Pricing_Groups {
 			</label>
 		<?php endforeach; ?>
 		<hr/>
-		<h4><?php esc_html_e( 'Membership Mapping (Paid Memberships Pro)', 'wb-role-based-pricing' ); ?></h4>
+		<h4><?php esc_html_e( 'Membership Mapping (Paid Memberships Pro)', 'wb-role-based-pricing-for-woocommerce' ); ?></h4>
 		<p class="description">
-			<?php esc_html_e( 'Enter PMPro membership level IDs (comma-separated). Example: 1,2,3', 'wb-role-based-pricing' ); ?>
+			<?php esc_html_e( 'Enter PMPro membership level IDs (comma-separated). Example: 1,2,3', 'wb-role-based-pricing-for-woocommerce' ); ?>
 		</p>
 		<p>
 			<input
@@ -132,34 +132,34 @@ final class Pricing_Groups {
 				class="regular-text"
 				name="wbrbpw_group_membership_levels"
 				value="<?php echo esc_attr( implode( ',', $memberships ) ); ?>"
-				placeholder="<?php esc_attr_e( '1,2,3', 'wb-role-based-pricing' ); ?>"
+				placeholder="<?php esc_attr_e( '1,2,3', 'wb-role-based-pricing-for-woocommerce' ); ?>"
 			/>
 		</p>
 		<?php if ( ! function_exists( 'pmpro_getMembershipLevelsForUser' ) ) : ?>
-			<p class="description"><?php esc_html_e( 'Paid Memberships Pro is not active. Mapping can still be saved and will apply when PMPro is active.', 'wb-role-based-pricing' ); ?></p>
+			<p class="description"><?php esc_html_e( 'Paid Memberships Pro is not active. Mapping can still be saved and will apply when PMPro is active.', 'wb-role-based-pricing-for-woocommerce' ); ?></p>
 		<?php endif; ?>
 		<hr/>
-		<h4><?php esc_html_e( 'Subscription Mapping (WooCommerce Subscriptions)', 'wb-role-based-pricing' ); ?></h4>
+		<h4><?php esc_html_e( 'Subscription Mapping (WooCommerce Subscriptions)', 'wb-role-based-pricing-for-woocommerce' ); ?></h4>
 		<p class="description">
-			<?php esc_html_e( 'Map subscription products and statuses to this group.', 'wb-role-based-pricing' ); ?>
+			<?php esc_html_e( 'Map subscription products and statuses to this group.', 'wb-role-based-pricing-for-woocommerce' ); ?>
 		</p>
 		<p>
-			<label><?php esc_html_e( 'Subscription product IDs (comma-separated, blank = any)', 'wb-role-based-pricing' ); ?></label><br/>
+			<label><?php esc_html_e( 'Subscription product IDs (comma-separated, blank = any)', 'wb-role-based-pricing-for-woocommerce' ); ?></label><br/>
 			<input
 				type="text"
 				class="regular-text"
 				name="wbrbpw_group_subscription_products"
 				value="<?php echo esc_attr( implode( ',', $sub_product_ids ) ); ?>"
-				placeholder="<?php esc_attr_e( '101,102', 'wb-role-based-pricing' ); ?>"
+				placeholder="<?php esc_attr_e( '101,102', 'wb-role-based-pricing-for-woocommerce' ); ?>"
 			/>
 		</p>
 		<p>
-			<label><strong><?php esc_html_e( 'Eligible subscription statuses', 'wb-role-based-pricing' ); ?></strong></label><br/>
+			<label><strong><?php esc_html_e( 'Eligible subscription statuses', 'wb-role-based-pricing-for-woocommerce' ); ?></strong></label><br/>
 			<?php
 			$available_statuses = array(
-				'active'         => __( 'Active', 'wb-role-based-pricing' ),
-				'on-hold'        => __( 'On hold', 'wb-role-based-pricing' ),
-				'pending-cancel' => __( 'Pending cancel', 'wb-role-based-pricing' ),
+				'active'         => __( 'Active', 'wb-role-based-pricing-for-woocommerce' ),
+				'on-hold'        => __( 'On hold', 'wb-role-based-pricing-for-woocommerce' ),
+				'pending-cancel' => __( 'Pending cancel', 'wb-role-based-pricing-for-woocommerce' ),
 			);
 			foreach ( $available_statuses as $status_key => $status_label ) :
 				?>
@@ -170,7 +170,7 @@ final class Pricing_Groups {
 			<?php endforeach; ?>
 		</p>
 		<?php if ( ! function_exists( 'wcs_get_users_subscriptions' ) ) : ?>
-			<p class="description"><?php esc_html_e( 'WooCommerce Subscriptions is not active. Mapping can still be saved and will apply when Subscriptions is active.', 'wb-role-based-pricing' ); ?></p>
+			<p class="description"><?php esc_html_e( 'WooCommerce Subscriptions is not active. Mapping can still be saved and will apply when Subscriptions is active.', 'wb-role-based-pricing-for-woocommerce' ); ?></p>
 		<?php endif; ?>
 		<?php
 	}
@@ -218,6 +218,7 @@ final class Pricing_Groups {
 			$subscription_statuses = array( 'active' );
 		}
 
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Rule values are sanitized per field in $rule.
 		$rule_in = isset( $_POST['wbrbpw_group_rule'] ) && is_array( $_POST['wbrbpw_group_rule'] ) ? wp_unslash( $_POST['wbrbpw_group_rule'] ) : array();
 		$rule = array(
 			'type'        => isset( $rule_in['type'] ) ? sanitize_key( $rule_in['type'] ) : 'none',
@@ -244,8 +245,8 @@ final class Pricing_Groups {
 	}
 
 	public static function register_columns( array $columns ): array {
-		$columns['wb_priority'] = __( 'Priority', 'wb-role-based-pricing' );
-		$columns['wb_enabled']  = __( 'Enabled', 'wb-role-based-pricing' );
+		$columns['wb_priority'] = __( 'Priority', 'wb-role-based-pricing-for-woocommerce' );
+		$columns['wb_enabled']  = __( 'Enabled', 'wb-role-based-pricing-for-woocommerce' );
 		return $columns;
 	}
 
@@ -255,7 +256,7 @@ final class Pricing_Groups {
 		}
 
 		if ( 'wb_enabled' === $column ) {
-			echo '1' === (string) get_post_meta( $post_id, self::META_ENABLED, true ) ? esc_html__( 'Yes', 'wb-role-based-pricing' ) : esc_html__( 'No', 'wb-role-based-pricing' );
+			echo '1' === (string) get_post_meta( $post_id, self::META_ENABLED, true ) ? esc_html__( 'Yes', 'wb-role-based-pricing-for-woocommerce' ) : esc_html__( 'No', 'wb-role-based-pricing-for-woocommerce' );
 		}
 	}
 
@@ -273,7 +274,8 @@ final class Pricing_Groups {
 				'post_status'    => 'publish',
 				'posts_per_page' => -1,
 				'orderby'        => 'meta_value_num',
-				'meta_key'       => self::META_PRIORITY,
+					// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Required to sort by admin-defined priority.
+					'meta_key'       => self::META_PRIORITY,
 				'order'          => 'ASC',
 			)
 		);

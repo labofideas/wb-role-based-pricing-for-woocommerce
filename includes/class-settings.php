@@ -23,7 +23,7 @@ final class Settings {
 	}
 
 	public static function add_settings_tab( array $tabs ): array {
-		$tabs['wb_role_based_pricing'] = __( 'WB Role Based Pricing', 'wb-role-based-pricing' );
+		$tabs['wb_role_based_pricing'] = __( 'WB Role Based Pricing', 'wb-role-based-pricing-for-woocommerce' );
 		return $tabs;
 	}
 
@@ -91,57 +91,57 @@ final class Settings {
 	}
 
 	public static function get_guest_text(): string {
-		$text = (string) get_option( self::OPTION_GUEST_TEXT, __( 'Login to see pricing', 'wb-role-based-pricing' ) );
-		return '' !== trim( $text ) ? $text : __( 'Login to see pricing', 'wb-role-based-pricing' );
+		$text = (string) get_option( self::OPTION_GUEST_TEXT, __( 'Login to see pricing', 'wb-role-based-pricing-for-woocommerce' ) );
+		return '' !== trim( $text ) ? $text : __( 'Login to see pricing', 'wb-role-based-pricing-for-woocommerce' );
 	}
 
 	private static function get_settings(): array {
 		return array(
 			array(
-				'name' => __( 'WB Role Based Pricing', 'wb-role-based-pricing' ),
+				'name' => __( 'WB Role Based Pricing', 'wb-role-based-pricing-for-woocommerce' ),
 				'type' => 'title',
-				'desc' => __( 'Configure role/group based dynamic pricing behavior.', 'wb-role-based-pricing' ),
+				'desc' => __( 'Configure role/group based dynamic pricing behavior.', 'wb-role-based-pricing-for-woocommerce' ),
 				'id'   => 'wbrbpw_settings_section',
 			),
 			array(
-				'name'    => __( 'Enable plugin', 'wb-role-based-pricing' ),
+				'name'    => __( 'Enable plugin', 'wb-role-based-pricing-for-woocommerce' ),
 				'id'      => self::OPTION_ENABLED,
 				'type'    => 'checkbox',
 				'default' => 'yes',
 			),
 			array(
-				'name'    => __( 'Base price for adjustments', 'wb-role-based-pricing' ),
+				'name'    => __( 'Base price for adjustments', 'wb-role-based-pricing-for-woocommerce' ),
 				'id'      => self::OPTION_BASE_PRICE,
 				'type'    => 'select',
 				'options' => array(
-					'regular' => __( 'Regular price', 'wb-role-based-pricing' ),
-					'sale'    => __( 'Sale price (if on sale)', 'wb-role-based-pricing' ),
-					'lowest'  => __( 'Lowest of regular/sale', 'wb-role-based-pricing' ),
+					'regular' => __( 'Regular price', 'wb-role-based-pricing-for-woocommerce' ),
+					'sale'    => __( 'Sale price (if on sale)', 'wb-role-based-pricing-for-woocommerce' ),
+					'lowest'  => __( 'Lowest of regular/sale', 'wb-role-based-pricing-for-woocommerce' ),
 				),
 				'default' => 'lowest',
 			),
 			array(
-				'name'    => __( 'Sale price interaction', 'wb-role-based-pricing' ),
+				'name'    => __( 'Sale price interaction', 'wb-role-based-pricing-for-woocommerce' ),
 				'id'      => self::OPTION_SALE_INTERACTION,
 				'type'    => 'select',
 				'options' => array(
-					'respect_sale' => __( 'Respect Woo sale', 'wb-role-based-pricing' ),
-					'override_sale' => __( 'Pricing Group overrides sale', 'wb-role-based-pricing' ),
+					'respect_sale' => __( 'Respect Woo sale', 'wb-role-based-pricing-for-woocommerce' ),
+					'override_sale' => __( 'Pricing Group overrides sale', 'wb-role-based-pricing-for-woocommerce' ),
 				),
 				'default' => 'respect_sale',
 			),
 			array(
-				'name'    => __( 'Guest pricing', 'wb-role-based-pricing' ),
+				'name'    => __( 'Guest pricing', 'wb-role-based-pricing-for-woocommerce' ),
 				'id'      => self::OPTION_GUEST_PRICING,
 				'type'    => 'select',
 				'options' => array(
-					'default' => __( 'Use default Woo pricing', 'wb-role-based-pricing' ),
-					'group'   => __( 'Assign guests to a pricing group', 'wb-role-based-pricing' ),
+					'default' => __( 'Use default Woo pricing', 'wb-role-based-pricing-for-woocommerce' ),
+					'group'   => __( 'Assign guests to a pricing group', 'wb-role-based-pricing-for-woocommerce' ),
 				),
 				'default' => 'default',
 			),
 			array(
-				'name'              => __( 'Guest pricing group ID', 'wb-role-based-pricing' ),
+				'name'              => __( 'Guest pricing group ID', 'wb-role-based-pricing-for-woocommerce' ),
 				'id'                => self::OPTION_GUEST_GROUP,
 				'type'              => 'number',
 				'custom_attributes' => array(
@@ -149,53 +149,53 @@ final class Settings {
 					'step' => '1',
 				),
 				'default'           => '0',
-				'desc'              => __( 'Set a Pricing Group post ID to apply for guests when guest mode is enabled.', 'wb-role-based-pricing' ),
+				'desc'              => __( 'Set a Pricing Group post ID to apply for guests when guest mode is enabled.', 'wb-role-based-pricing-for-woocommerce' ),
 				'desc_tip'          => true,
 			),
 			array(
-				'name'    => __( 'Multiple eligibility resolution', 'wb-role-based-pricing' ),
+				'name'    => __( 'Multiple eligibility resolution', 'wb-role-based-pricing-for-woocommerce' ),
 				'id'      => self::OPTION_GROUP_RESOLUTION,
 				'type'    => 'select',
 				'options' => array(
-					'priority' => __( 'Highest priority group wins', 'wb-role-based-pricing' ),
+					'priority' => __( 'Highest priority group wins', 'wb-role-based-pricing-for-woocommerce' ),
 				),
 				'default' => 'priority',
 			),
 			array(
-				'name'    => __( 'Eligibility source priority', 'wb-role-based-pricing' ),
+				'name'    => __( 'Eligibility source priority', 'wb-role-based-pricing-for-woocommerce' ),
 				'id'      => self::OPTION_SOURCE_PRIORITY,
 				'type'    => 'select',
 				'options' => array(
-					'subscription,membership,role' => __( 'Subscription > Membership > Role', 'wb-role-based-pricing' ),
-					'membership,subscription,role' => __( 'Membership > Subscription > Role', 'wb-role-based-pricing' ),
-					'role,membership,subscription' => __( 'Role > Membership > Subscription', 'wb-role-based-pricing' ),
-					'role,subscription,membership' => __( 'Role > Subscription > Membership', 'wb-role-based-pricing' ),
+					'subscription,membership,role' => __( 'Subscription > Membership > Role', 'wb-role-based-pricing-for-woocommerce' ),
+					'membership,subscription,role' => __( 'Membership > Subscription > Role', 'wb-role-based-pricing-for-woocommerce' ),
+					'role,membership,subscription' => __( 'Role > Membership > Subscription', 'wb-role-based-pricing-for-woocommerce' ),
+					'role,subscription,membership' => __( 'Role > Subscription > Membership', 'wb-role-based-pricing-for-woocommerce' ),
 				),
 				'default' => 'subscription,membership,role',
-				'desc'    => __( 'Controls which source wins when a user qualifies from multiple sources.', 'wb-role-based-pricing' ),
+				'desc'    => __( 'Controls which source wins when a user qualifies from multiple sources.', 'wb-role-based-pricing-for-woocommerce' ),
 			),
 			array(
-				'name'    => __( 'Rounding', 'wb-role-based-pricing' ),
+				'name'    => __( 'Rounding', 'wb-role-based-pricing-for-woocommerce' ),
 				'id'      => self::OPTION_ROUNDING,
 				'type'    => 'select',
 				'options' => array(
-					'none' => __( 'None', 'wb-role-based-pricing' ),
-					'2'    => __( 'Round to 2 decimals', 'wb-role-based-pricing' ),
-					'0'    => __( 'Round to nearest integer', 'wb-role-based-pricing' ),
+					'none' => __( 'None', 'wb-role-based-pricing-for-woocommerce' ),
+					'2'    => __( 'Round to 2 decimals', 'wb-role-based-pricing-for-woocommerce' ),
+					'0'    => __( 'Round to nearest integer', 'wb-role-based-pricing-for-woocommerce' ),
 				),
 				'default' => 'none',
 			),
 			array(
-				'name'    => __( 'Hide prices for guests', 'wb-role-based-pricing' ),
+				'name'    => __( 'Hide prices for guests', 'wb-role-based-pricing-for-woocommerce' ),
 				'id'      => self::OPTION_HIDE_GUEST_PRICE,
 				'type'    => 'checkbox',
 				'default' => 'no',
 			),
 			array(
-				'name'    => __( 'Guest hidden price text', 'wb-role-based-pricing' ),
+				'name'    => __( 'Guest hidden price text', 'wb-role-based-pricing-for-woocommerce' ),
 				'id'      => self::OPTION_GUEST_TEXT,
 				'type'    => 'text',
-				'default' => __( 'Login to see pricing', 'wb-role-based-pricing' ),
+				'default' => __( 'Login to see pricing', 'wb-role-based-pricing-for-woocommerce' ),
 			),
 			array(
 				'type' => 'sectionend',
