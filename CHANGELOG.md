@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.0 - 2026-02-15
+
+- Added Phase 2 eligibility source integrations:
+  - Paid Memberships Pro membership-level mapping to Pricing Groups.
+  - WooCommerce Subscriptions mapping to Pricing Groups (product IDs + status filters).
+- Added settings option for eligibility source priority resolution.
+- Added resolver debug data and frontend admin debug panel (`?wbrbpw_debug=1`).
+- Added order item audit key `_wb_eligibility_source`.
+
 ## 1.0.0 - 2026-02-15
 
 - Finalized Phase 1 feature set for role-based pricing.

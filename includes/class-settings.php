@@ -11,6 +11,7 @@ final class Settings {
 	public const OPTION_GUEST_PRICING = 'wbrbpw_guest_pricing';
 	public const OPTION_GUEST_GROUP = 'wbrbpw_guest_group';
 	public const OPTION_GROUP_RESOLUTION = 'wbrbpw_group_resolution';
+	public const OPTION_SOURCE_PRIORITY = 'wbrbpw_source_priority';
 	public const OPTION_ROUNDING = 'wbrbpw_rounding';
 	public const OPTION_HIDE_GUEST_PRICE = 'wbrbpw_hide_guest_price';
 	public const OPTION_GUEST_TEXT = 'wbrbpw_guest_text';
@@ -60,6 +61,29 @@ final class Settings {
 
 	public static function get_rounding_mode(): string {
 		return get_option( self::OPTION_ROUNDING, 'none' );
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function get_source_priority_order(): array {
+		$raw = (string) get_option( self::OPTION_SOURCE_PRIORITY, 'subscription,membership,role' );
+		$parts = array_filter(
+			array_map(
+				'sanitize_key',
+				array_map( 'trim', explode( ',', $raw ) )
+			)
+		);
+		$allowed = array( 'subscription', 'membership', 'role' );
+		$order = array_values( array_intersect( $parts, $allowed ) );
+
+		foreach ( $allowed as $source ) {
+			if ( ! in_array( $source, $order, true ) ) {
+				$order[] = $source;
+			}
+		}
+
+		return $order;
 	}
 
 	public static function hide_guest_price(): bool {
@@ -136,6 +160,19 @@ final class Settings {
 					'priority' => __( 'Highest priority group wins', 'wb-role-based-pricing' ),
 				),
 				'default' => 'priority',
+			),
+			array(
+				'name'    => __( 'Eligibility source priority', 'wb-role-based-pricing' ),
+				'id'      => self::OPTION_SOURCE_PRIORITY,
+				'type'    => 'select',
+				'options' => array(
+					'subscription,membership,role' => __( 'Subscription > Membership > Role', 'wb-role-based-pricing' ),
+					'membership,subscription,role' => __( 'Membership > Subscription > Role', 'wb-role-based-pricing' ),
+					'role,membership,subscription' => __( 'Role > Membership > Subscription', 'wb-role-based-pricing' ),
+					'role,subscription,membership' => __( 'Role > Subscription > Membership', 'wb-role-based-pricing' ),
+				),
+				'default' => 'subscription,membership,role',
+				'desc'    => __( 'Controls which source wins when a user qualifies from multiple sources.', 'wb-role-based-pricing' ),
 			),
 			array(
 				'name'    => __( 'Rounding', 'wb-role-based-pricing' ),

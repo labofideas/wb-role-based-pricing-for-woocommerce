@@ -34,6 +34,7 @@ final class Cart_Pricing {
 		}
 
 		$group_id = $this->eligibility->get_primary_group_id();
+		$group_source = $this->eligibility->get_primary_group_source();
 		if ( $group_id <= 0 ) {
 			return;
 		}
@@ -55,6 +56,7 @@ final class Cart_Pricing {
 
 			$cart->cart_contents[ $cart_item_key ]['wbrbpw_pricing'] = array(
 				'group_id'    => (int) $resolved['group_id'],
+				'group_source'=> sanitize_key( $group_source ),
 				'source'      => (string) $resolved['source'],
 				'base_price'  => (float) $resolved['base_price'],
 				'final_price' => $resolved_price,

@@ -14,6 +14,7 @@ require_once WBRBPW_PATH . 'includes/class-price-calculator.php';
 require_once WBRBPW_PATH . 'includes/class-pricing-engine.php';
 require_once WBRBPW_PATH . 'includes/class-cart-pricing.php';
 require_once WBRBPW_PATH . 'includes/class-order-audit.php';
+require_once WBRBPW_PATH . 'includes/class-debug-tool.php';
 require_once WBRBPW_PATH . 'includes/Admin/class-pricing-groups.php';
 require_once WBRBPW_PATH . 'includes/Admin/class-product-pricing.php';
 require_once WBRBPW_PATH . 'includes/Admin/class-category-pricing.php';
@@ -53,6 +54,7 @@ final class Plugin {
 		Pricing_Engine::init( $this->calculator, $this->eligibility );
 		Cart_Pricing::init( $this->calculator, $this->eligibility );
 		Order_Audit::init();
+		Debug_Tool::init( $this->eligibility );
 	}
 
 	/**

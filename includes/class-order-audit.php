@@ -20,6 +20,7 @@ final class Order_Audit {
 		$pricing = $values['wbrbpw_pricing'];
 
 		$item->add_meta_data( '_wb_applied_pricing_group', isset( $pricing['group_id'] ) ? absint( $pricing['group_id'] ) : 0, true );
+		$item->add_meta_data( '_wb_eligibility_source', isset( $pricing['group_source'] ) ? sanitize_key( (string) $pricing['group_source'] ) : '', true );
 		$item->add_meta_data( '_wb_pricing_source', isset( $pricing['source'] ) ? sanitize_text_field( (string) $pricing['source'] ) : '', true );
 		$item->add_meta_data( '_wb_base_price', isset( $pricing['base_price'] ) ? wc_format_decimal( (string) $pricing['base_price'] ) : '', true );
 		$item->add_meta_data( '_wb_final_price', isset( $pricing['final_price'] ) ? wc_format_decimal( (string) $pricing['final_price'] ) : '', true );

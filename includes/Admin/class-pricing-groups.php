@@ -9,6 +9,8 @@ final class Pricing_Groups {
 	private const META_ENABLED = '_wb_group_enabled';
 	private const META_DEFAULT_RULE = '_wb_group_default_rule';
 	private const META_ROLE_MAP = '_wb_group_role_map';
+	private const META_MEMBERSHIP_MAP = '_wb_group_membership_map';
+	private const META_SUBSCRIPTION_MAP = '_wb_group_subscription_map';
 
 	/**
 	 * @var array<int, array<string,mixed>>|null
@@ -63,9 +65,15 @@ final class Pricing_Groups {
 		$enabled  = get_post_meta( $post->ID, self::META_ENABLED, true );
 		$rule     = get_post_meta( $post->ID, self::META_DEFAULT_RULE, true );
 		$roles    = get_post_meta( $post->ID, self::META_ROLE_MAP, true );
+		$memberships = get_post_meta( $post->ID, self::META_MEMBERSHIP_MAP, true );
+		$subscriptions = get_post_meta( $post->ID, self::META_SUBSCRIPTION_MAP, true );
 
 		$rule = is_array( $rule ) ? $rule : array();
 		$roles = is_array( $roles ) ? $roles : array();
+		$memberships = is_array( $memberships ) ? array_map( 'absint', $memberships ) : array();
+		$subscriptions = is_array( $subscriptions ) ? $subscriptions : array();
+		$sub_product_ids = isset( $subscriptions['product_ids'] ) && is_array( $subscriptions['product_ids'] ) ? array_map( 'absint', $subscriptions['product_ids'] ) : array();
+		$sub_statuses = isset( $subscriptions['statuses'] ) && is_array( $subscriptions['statuses'] ) ? array_map( 'sanitize_key', $subscriptions['statuses'] ) : array( 'active' );
 		$rule_type = isset( $rule['type'] ) ? (string) $rule['type'] : 'none';
 
 		global $wp_roles;
@@ -113,6 +121,57 @@ final class Pricing_Groups {
 				<?php echo esc_html( translate_user_role( $role_data['name'] ) ); ?>
 			</label>
 		<?php endforeach; ?>
+		<hr/>
+		<h4><?php esc_html_e( 'Membership Mapping (Paid Memberships Pro)', 'wb-role-based-pricing' ); ?></h4>
+		<p class="description">
+			<?php esc_html_e( 'Enter PMPro membership level IDs (comma-separated). Example: 1,2,3', 'wb-role-based-pricing' ); ?>
+		</p>
+		<p>
+			<input
+				type="text"
+				class="regular-text"
+				name="wbrbpw_group_membership_levels"
+				value="<?php echo esc_attr( implode( ',', $memberships ) ); ?>"
+				placeholder="<?php esc_attr_e( '1,2,3', 'wb-role-based-pricing' ); ?>"
+			/>
+		</p>
+		<?php if ( ! function_exists( 'pmpro_getMembershipLevelsForUser' ) ) : ?>
+			<p class="description"><?php esc_html_e( 'Paid Memberships Pro is not active. Mapping can still be saved and will apply when PMPro is active.', 'wb-role-based-pricing' ); ?></p>
+		<?php endif; ?>
+		<hr/>
+		<h4><?php esc_html_e( 'Subscription Mapping (WooCommerce Subscriptions)', 'wb-role-based-pricing' ); ?></h4>
+		<p class="description">
+			<?php esc_html_e( 'Map subscription products and statuses to this group.', 'wb-role-based-pricing' ); ?>
+		</p>
+		<p>
+			<label><?php esc_html_e( 'Subscription product IDs (comma-separated, blank = any)', 'wb-role-based-pricing' ); ?></label><br/>
+			<input
+				type="text"
+				class="regular-text"
+				name="wbrbpw_group_subscription_products"
+				value="<?php echo esc_attr( implode( ',', $sub_product_ids ) ); ?>"
+				placeholder="<?php esc_attr_e( '101,102', 'wb-role-based-pricing' ); ?>"
+			/>
+		</p>
+		<p>
+			<label><strong><?php esc_html_e( 'Eligible subscription statuses', 'wb-role-based-pricing' ); ?></strong></label><br/>
+			<?php
+			$available_statuses = array(
+				'active'         => __( 'Active', 'wb-role-based-pricing' ),
+				'on-hold'        => __( 'On hold', 'wb-role-based-pricing' ),
+				'pending-cancel' => __( 'Pending cancel', 'wb-role-based-pricing' ),
+			);
+			foreach ( $available_statuses as $status_key => $status_label ) :
+				?>
+				<label style="display:block;margin-bottom:4px;">
+					<input type="checkbox" name="wbrbpw_group_subscription_statuses[]" value="<?php echo esc_attr( $status_key ); ?>" <?php checked( in_array( $status_key, $sub_statuses, true ) ); ?> />
+					<?php echo esc_html( $status_label ); ?>
+				</label>
+			<?php endforeach; ?>
+		</p>
+		<?php if ( ! function_exists( 'wcs_get_users_subscriptions' ) ) : ?>
+			<p class="description"><?php esc_html_e( 'WooCommerce Subscriptions is not active. Mapping can still be saved and will apply when Subscriptions is active.', 'wb-role-based-pricing' ); ?></p>
+		<?php endif; ?>
 		<?php
 	}
 
@@ -132,6 +191,32 @@ final class Pricing_Groups {
 		$priority = isset( $_POST['wbrbpw_group_priority'] ) ? absint( wp_unslash( $_POST['wbrbpw_group_priority'] ) ) : 0;
 		$enabled  = isset( $_POST['wbrbpw_group_enabled'] ) ? '1' : '0';
 		$roles    = isset( $_POST['wbrbpw_group_roles'] ) && is_array( $_POST['wbrbpw_group_roles'] ) ? array_map( 'sanitize_key', wp_unslash( $_POST['wbrbpw_group_roles'] ) ) : array();
+		$membership_levels_raw = isset( $_POST['wbrbpw_group_membership_levels'] ) ? sanitize_text_field( wp_unslash( $_POST['wbrbpw_group_membership_levels'] ) ) : '';
+		$membership_levels = array_values(
+			array_filter(
+				array_map(
+					'absint',
+					array_map( 'trim', explode( ',', $membership_levels_raw ) )
+				)
+			)
+		);
+		$subscription_products_raw = isset( $_POST['wbrbpw_group_subscription_products'] ) ? sanitize_text_field( wp_unslash( $_POST['wbrbpw_group_subscription_products'] ) ) : '';
+		$subscription_products = array_values(
+			array_filter(
+				array_map(
+					'absint',
+					array_map( 'trim', explode( ',', $subscription_products_raw ) )
+				)
+			)
+		);
+		$subscription_statuses = isset( $_POST['wbrbpw_group_subscription_statuses'] ) && is_array( $_POST['wbrbpw_group_subscription_statuses'] )
+			? array_values( array_unique( array_map( 'sanitize_key', wp_unslash( $_POST['wbrbpw_group_subscription_statuses'] ) ) ) )
+			: array( 'active' );
+		$subscription_allowed_statuses = array( 'active', 'on-hold', 'pending-cancel' );
+		$subscription_statuses = array_values( array_intersect( $subscription_statuses, $subscription_allowed_statuses ) );
+		if ( empty( $subscription_statuses ) ) {
+			$subscription_statuses = array( 'active' );
+		}
 
 		$rule_in = isset( $_POST['wbrbpw_group_rule'] ) && is_array( $_POST['wbrbpw_group_rule'] ) ? wp_unslash( $_POST['wbrbpw_group_rule'] ) : array();
 		$rule = array(
@@ -144,6 +229,15 @@ final class Pricing_Groups {
 		update_post_meta( $post_id, self::META_PRIORITY, $priority );
 		update_post_meta( $post_id, self::META_ENABLED, $enabled );
 		update_post_meta( $post_id, self::META_ROLE_MAP, $roles );
+		update_post_meta( $post_id, self::META_MEMBERSHIP_MAP, $membership_levels );
+		update_post_meta(
+			$post_id,
+			self::META_SUBSCRIPTION_MAP,
+			array(
+				'product_ids' => $subscription_products,
+				'statuses'    => $subscription_statuses,
+			)
+		);
 		update_post_meta( $post_id, self::META_DEFAULT_RULE, $rule );
 
 		self::$groups_cache = null;
@@ -196,6 +290,8 @@ final class Pricing_Groups {
 				'name'         => $post->post_title,
 				'priority'     => (int) get_post_meta( $post->ID, self::META_PRIORITY, true ),
 				'roles'        => (array) get_post_meta( $post->ID, self::META_ROLE_MAP, true ),
+				'membership_levels' => (array) get_post_meta( $post->ID, self::META_MEMBERSHIP_MAP, true ),
+				'subscriptions' => (array) get_post_meta( $post->ID, self::META_SUBSCRIPTION_MAP, true ),
 				'default_rule' => (array) get_post_meta( $post->ID, self::META_DEFAULT_RULE, true ),
 			);
 		}
