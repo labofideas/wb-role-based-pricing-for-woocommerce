@@ -152,14 +152,12 @@ final class Product_Pricing {
 
 		$copy_parent_all = isset( $_POST['wbrbpw_bulk_copy_parent_all'] );
 		$clear_all       = isset( $_POST['wbrbpw_bulk_clear_all_variations'] );
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Group IDs are sanitized with absint() after unslash.
-		$apply_groups    = isset( $_POST['wbrbpw_bulk_apply_to_variations'] ) && is_array( $_POST['wbrbpw_bulk_apply_to_variations'] )
-			? array_map( 'absint', array_keys( wp_unslash( $_POST['wbrbpw_bulk_apply_to_variations'] ) ) )
-			: array();
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Group IDs are sanitized with absint() after unslash.
-		$clear_groups    = isset( $_POST['wbrbpw_bulk_clear_group_variations'] ) && is_array( $_POST['wbrbpw_bulk_clear_group_variations'] )
-			? array_map( 'absint', array_keys( wp_unslash( $_POST['wbrbpw_bulk_clear_group_variations'] ) ) )
-			: array();
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Raw request array; keys are sanitized with absint().
+		$apply_groups_raw = isset( $_POST['wbrbpw_bulk_apply_to_variations'] ) && is_array( $_POST['wbrbpw_bulk_apply_to_variations'] ) ? wp_unslash( $_POST['wbrbpw_bulk_apply_to_variations'] ) : array();
+		$apply_groups     = array_map( 'absint', array_keys( $apply_groups_raw ) );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Raw request array; keys are sanitized with absint().
+		$clear_groups_raw = isset( $_POST['wbrbpw_bulk_clear_group_variations'] ) && is_array( $_POST['wbrbpw_bulk_clear_group_variations'] ) ? wp_unslash( $_POST['wbrbpw_bulk_clear_group_variations'] ) : array();
+		$clear_groups     = array_map( 'absint', array_keys( $clear_groups_raw ) );
 
 			if ( ! $copy_parent_all && ! $clear_all && empty( $apply_groups ) && empty( $clear_groups ) ) {
 				return;
