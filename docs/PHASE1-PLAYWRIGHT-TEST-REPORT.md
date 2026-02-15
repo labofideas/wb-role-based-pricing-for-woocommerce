@@ -87,6 +87,10 @@ Frontend/cart/order proof:
     Guest pricing for grouped and external product types.
 16. `docs/screenshots/17-shop-wholesale-grouped-external-pricing.png`  
     Wholesale pricing for grouped and external product types.
+17. `docs/screenshots/18-shop-wholesale-subscription-priority-pricing.png`  
+    Subscription-priority pricing proof on shop page (subscription group wins over role group).
+18. `docs/screenshots/19-admin-order-subscription-eligibility-meta.png`  
+    Admin order item meta proving subscription eligibility source + locked pricing audit values.
 
 ## 6. Bug Found and Fixed During Testing
 
@@ -195,3 +199,23 @@ After completing the expanded QA pass, plugin settings were restored to baseline
 - `wbrbpw_rounding=none`
 - `wbrbpw_hide_guest_price=no`
 - `wbrbpw_guest_text=Login to see pricing`
+
+## 11. Phase 2 Eligibility Evidence (PMPro + Subscriptions)
+
+The Phase 2 eligibility priority test was executed with source priority set so subscription mapping outranks role mapping.
+
+Validated result:
+
+- Shop price resolved using subscription-priority group rule.
+- Order item audit metadata stored the expected source and computed values:
+  - `_wb_applied_pricing_group: 12`
+  - `_wb_eligibility_source: subscription`
+  - `_wb_pricing_source: product`
+  - `_wb_base_price: 100`
+  - `_wb_final_price: 80`
+  - `_wb_adjustment_details: {"type":"percent","fixed_price":"80","fixed_regular":"100","fixed_sale":"80","percent":"-20","amount":"0"}`
+
+Evidence screenshots:
+
+- `docs/screenshots/18-shop-wholesale-subscription-priority-pricing.png`
+- `docs/screenshots/19-admin-order-subscription-eligibility-meta.png`

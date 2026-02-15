@@ -1,24 +1,27 @@
 # Changelog
 
-## 1.1.0 - 2026-02-15
+## 1.1.0 - Unreleased
 
-- Added Phase 2 eligibility source integrations:
-  - Paid Memberships Pro membership-level mapping to Pricing Groups.
-  - WooCommerce Subscriptions mapping to Pricing Groups (product IDs + status filters).
-- Added settings option for eligibility source priority resolution.
-- Added resolver debug data and frontend admin debug panel (`?wbrbpw_debug=1`).
-- Added order item audit key `_wb_eligibility_source`.
+- Added Paid Memberships Pro level mapping to Pricing Groups.
+- Added WooCommerce Subscriptions mapping to Pricing Groups.
+- Added eligibility source priority setting (role/membership/subscription).
+- Added `_wb_eligibility_source` in order item audit metadata.
+- Added frontend debug panel for admins with `?wbrbpw_debug=1`.
 
 ## 1.0.0 - 2026-02-15
 
-- Finalized Phase 1 feature set for role-based pricing.
-- Added pricing groups CPT with priority, default rules, and role mapping.
-- Added plugin settings under WooCommerce settings tab.
-- Added product and variation pricing rule UIs and storage.
-- Added variation bulk actions: copy parent, clear all, group apply/clear.
-- Added category-level pricing rules with behavior controls.
-- Added pricing engine integration for product pricing hooks and variation hash.
-- Added cart recalculation pricing integration.
-- Added order item pricing audit metadata lock.
-- Added plugin action links: `Settings` and `Pricing Groups`.
+- Initial stable release (Phase 1).
+- Added Pricing Groups CRUD with priority and role mapping.
+- Added global settings under `WooCommerce -> Settings -> WB Role Based Pricing`.
+- Added product and variation rule UI (including variation bulk actions).
+- Added category-level rules and precedence handling.
+- Added frontend pricing filters for product/shop/variation contexts.
+- Added cart and checkout recalculation integration.
+- Added order item audit metadata lock:
+  - `_wb_applied_pricing_group`
+  - `_wb_pricing_source`
+  - `_wb_base_price`
+  - `_wb_final_price`
+  - `_wb_adjustment_details`
+- Added plugin action links: `Settings`, `Pricing Groups`.
 - Declared WooCommerce HPOS compatibility.
