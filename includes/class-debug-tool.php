@@ -22,7 +22,8 @@ final class Debug_Tool {
 	}
 
 	public function render_debug_panel(): void {
-		if ( ! isset( $_GET['wbrbpw_debug'] ) || '1' !== (string) $_GET['wbrbpw_debug'] ) {
+		$debug_flag = isset( $_GET['wbrbpw_debug'] ) ? sanitize_text_field( wp_unslash( $_GET['wbrbpw_debug'] ) ) : '';
+		if ( '1' !== $debug_flag ) {
 			return;
 		}
 
@@ -60,4 +61,3 @@ final class Debug_Tool {
 		<?php
 	}
 }
-

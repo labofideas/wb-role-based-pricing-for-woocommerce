@@ -109,8 +109,12 @@ final class Product_Pricing {
 			echo '</div>';
 		}
 
-		public static function save_product_rules( \WC_Product $product ): void {
+	public static function save_product_rules( \WC_Product $product ): void {
 		if ( ! isset( $_POST['wbrbpw_product_rules_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wbrbpw_product_rules_nonce'] ) ), 'wbrbpw_save_product_rules' ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_product', $product->get_id() ) ) {
 			return;
 		}
 
@@ -247,6 +251,15 @@ final class Product_Pricing {
 	}
 
 	public static function save_variation_fields( int $variation_id, int $index ): void {
+		if ( ! isset( $_POST['wbrbpw_product_rules_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wbrbpw_product_rules_nonce'] ) ), 'wbrbpw_save_product_rules' ) ) {
+			return;
+		}
+
+		$parent_id = wp_get_post_parent_id( $variation_id );
+		if ( $parent_id <= 0 || ! current_user_can( 'edit_product', $parent_id ) ) {
+			return;
+		}
+
 		$all_rules = isset( $_POST['wbrbpw_variation_rules'] ) && is_array( $_POST['wbrbpw_variation_rules'] ) ? wp_unslash( $_POST['wbrbpw_variation_rules'] ) : array();
 		if ( empty( $all_rules[ $variation_id ] ) || ! is_array( $all_rules[ $variation_id ] ) ) {
 			return;

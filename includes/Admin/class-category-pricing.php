@@ -75,6 +75,10 @@ final class Category_Pricing {
 			return;
 		}
 
+		if ( ! current_user_can( 'manage_product_terms' ) ) {
+			return;
+		}
+
 		$raw_rules = isset( $_POST['wbrbpw_category_rules'] ) && is_array( $_POST['wbrbpw_category_rules'] ) ? wp_unslash( $_POST['wbrbpw_category_rules'] ) : array();
 		$rules = array();
 
