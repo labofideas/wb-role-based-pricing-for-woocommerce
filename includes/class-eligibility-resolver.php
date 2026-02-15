@@ -80,12 +80,8 @@ final class Eligibility_Resolver {
 			);
 		}
 
-		$legacy_groups = array_merge(
-			(array) ( $source_groups['role'] ?? array() ),
-			(array) ( $source_groups['membership'] ?? array() ),
-			(array) ( $source_groups['subscription'] ?? array() )
-		);
-		$legacy_groups = apply_filters( 'wbrbpw_user_group_ids', $legacy_groups, $current_user );
+		$legacy_seed = (array) ( $source_groups['role'] ?? array() );
+		$legacy_groups = apply_filters( 'wbrbpw_user_group_ids', $legacy_seed, $current_user );
 		$legacy_groups = array_values( array_unique( array_map( 'absint', (array) $legacy_groups ) ) );
 		$source_groups = $this->inject_legacy_groups_into_role_source( $source_groups, $legacy_groups );
 
