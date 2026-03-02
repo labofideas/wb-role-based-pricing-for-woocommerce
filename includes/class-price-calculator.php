@@ -186,7 +186,7 @@ final class Price_Calculator {
 	 * @return array<string,mixed>|null
 	 */
 	private function extract_category_rule( \WC_Product $product, int $group_id, bool $override_only ): ?array {
-		$term_ids = wc_get_product_term_ids( $product->get_id(), 'product_cat' );
+		$term_ids = $this->get_relevant_category_term_ids( $product );
 		if ( empty( $term_ids ) ) {
 			return null;
 		}
@@ -215,6 +215,24 @@ final class Price_Calculator {
 		}
 
 		return null;
+	}
+
+	/**
+	 * @return int[]
+	 */
+	private function get_relevant_category_term_ids( \WC_Product $product ): array {
+		$term_ids = wc_get_product_term_ids( $product->get_id(), 'product_cat' );
+
+		if ( empty( $term_ids ) && $product->is_type( 'variation' ) ) {
+			$parent_id = $product->get_parent_id();
+			if ( $parent_id > 0 ) {
+				$term_ids = wc_get_product_term_ids( $parent_id, 'product_cat' );
+			}
+		}
+
+		$term_ids = array_values( array_unique( array_map( 'absint', (array) $term_ids ) ) );
+		sort( $term_ids, SORT_NUMERIC );
+		return $term_ids;
 	}
 
 	/**

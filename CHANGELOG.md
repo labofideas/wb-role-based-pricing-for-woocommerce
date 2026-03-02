@@ -7,6 +7,12 @@
 - Added eligibility source priority setting (role/membership/subscription).
 - Added `_wb_eligibility_source` in order item audit metadata.
 - Added frontend debug panel for admins with `?wbrbpw_debug=1`.
+- Fixed cart price recalculation idempotency to prevent stacked adjustments across repeated total recalculations.
+- Fixed category-rule resolution for variations by falling back to parent product categories when needed.
+- Hardened settings getters with allowed-value validation/fallbacks for safer runtime behavior.
+- Added plugin textdomain loading on `plugins_loaded`.
+- Added uninstall cleanup for plugin options.
+- Added automated regression smoke test runner (`scripts/regression-smoke.php`) with CLI execution docs.
 
 ## 1.0.0 - 2026-02-15
 

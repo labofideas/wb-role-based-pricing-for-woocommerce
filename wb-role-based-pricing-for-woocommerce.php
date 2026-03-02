@@ -49,6 +49,7 @@ add_action(
 add_action(
 	'plugins_loaded',
 	static function () {
+		load_plugin_textdomain( 'wb-role-based-pricing-for-woocommerce', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 		\WBCOM\WBRBPW\Plugin::init();
 	}
 );

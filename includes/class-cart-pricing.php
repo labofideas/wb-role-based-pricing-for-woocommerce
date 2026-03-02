@@ -7,6 +7,8 @@ defined( 'ABSPATH' ) || exit;
 final class Cart_Pricing {
 	private static ?self $instance = null;
 
+	private const CART_ORIGINAL_PRICE_KEY = 'wbrbpw_original_price';
+
 	private Price_Calculator $calculator;
 
 	private Eligibility_Resolver $eligibility;
@@ -33,11 +35,12 @@ final class Cart_Pricing {
 			return;
 		}
 
-		$group_id = $this->eligibility->get_primary_group_id();
-		$group_source = $this->eligibility->get_primary_group_source();
-		if ( $group_id <= 0 ) {
+		if ( $cart->is_empty() ) {
 			return;
 		}
+
+		$group_id     = $this->eligibility->get_primary_group_id();
+		$group_source = $this->eligibility->get_primary_group_source();
 
 		foreach ( $cart->get_cart() as $cart_item_key => $cart_item ) {
 			if ( empty( $cart_item['data'] ) || ! $cart_item['data'] instanceof \WC_Product ) {
@@ -45,6 +48,16 @@ final class Cart_Pricing {
 			}
 
 			$product  = $cart_item['data'];
+			$original_price = isset( $cart_item[ self::CART_ORIGINAL_PRICE_KEY ] ) ? (float) $cart_item[ self::CART_ORIGINAL_PRICE_KEY ] : (float) $product->get_price( 'edit' );
+
+			$cart->cart_contents[ $cart_item_key ][ self::CART_ORIGINAL_PRICE_KEY ] = $original_price;
+			$product->set_price( $original_price );
+			unset( $cart->cart_contents[ $cart_item_key ]['wbrbpw_pricing'] );
+
+			if ( $group_id <= 0 ) {
+				continue;
+			}
+
 			$resolved = $this->calculator->resolve_price( $product, $group_id );
 
 			if ( null === $resolved ) {

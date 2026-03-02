@@ -81,11 +81,6 @@ Debug aid for admins:
   - `_wb_final_price`
   - `_wb_adjustment_details`
 
-## QA and test evidence
-
-- Playwright report and screenshot index:
-  - `docs/PHASE1-PLAYWRIGHT-TEST-REPORT.md`
-
 ## Support
 
 - Website: `https://wbcomdesigns.com/`
